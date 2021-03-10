@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react";
 import {sortData} from "./util"
-import Home from "./Home"
+import Card from "./Card"
+import "./App.css"
 
 const App = () =>{
   const [country,setCountry] = useState([]);
@@ -22,7 +23,7 @@ const App = () =>{
         console.log(info)
         const sorteddata = sortData(data);
         setSort(sorteddata);
-        console.log(sort)
+        // console.log(sort[0]);
       })
       
       .catch(err =>{
@@ -32,13 +33,20 @@ const App = () =>{
   return(
       <div>
          <h1>covid -19 Tracker</h1>
-    {
-      country.map((country) =>{
+
+   
+      <div class="container"> 
+      {
+      sort.slice(0,10).map((country,index) =>{
         return(
-          <Home name ={country.name} cases ={country.cases}/>
+          <Card id ={index+1} name ={country.country} cases ={country.cases}/>
           )
       })
     }
+    
+        </div>
+ 
+   
    
   
 
