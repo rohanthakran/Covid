@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useEffect,useState} from "react";
+import {sortData} from "./util"
+import Home from "./Home"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () =>{
+  const [country,setCountry] = useState([]);
+  const [sort,setSort] = useState([]);
+  useEffect( () =>{
+      fetch(`https://disease.sh/v3/covid-19/countries`)
+      .then(res =>
+        res.json()
+     )
+      .then( data =>{
+        console.log(data)
+        const info = data.map((count) =>(
+          {
+            name : count.country,
+            cases: count.cases
+          }
+        ))
+        setCountry(info)
+        console.log(info)
+        const sorteddata = sortData(data);
+        setSort(sorteddata);
+        console.log(sort)
+      })
+      
+      .catch(err =>{
+        console.log(err);
+      })
+  },[])
+  return(
+      <div>
+         <h1>covid -19 Tracker</h1>
+    {
+      country.map((country) =>{
+        return(
+          <Home name ={country.name} cases ={country.cases}/>
+          )
+      })
+    }
+   
+  
+
+
+      </div>
+    )
+     
+    
 }
-
 export default App;
